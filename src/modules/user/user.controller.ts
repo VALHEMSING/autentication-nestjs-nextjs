@@ -14,7 +14,18 @@ export class UserController {
   @ApiResponse({ status: 201, description: 'The user has been successfully created.' })
   @ApiResponse({ status: 409, description: 'User already exists.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
-  @ApiBody({ type: CreateUserDto })
+  @ApiBody({ 
+    description: 'User to register',
+    examples: {
+      example: {
+        value:{
+          username: 'username',
+          email: 'email@gmail.com',
+          password: 'password',
+        }
+      }
+    }
+   })
   /**
    * Register a new user.
    * @param createUserDto The user to register.
