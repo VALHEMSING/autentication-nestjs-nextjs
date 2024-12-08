@@ -36,8 +36,12 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({ status: 200, description: 'Returns all users.' })
+  @ApiResponse({ status: 404, description: 'Users not found.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  async findAllUsers() {
+    return await this.userService.findAllUsers();
   }
 
   @Get(':id')
