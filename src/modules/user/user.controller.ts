@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('User')
 @Controller('user')
@@ -45,8 +45,13 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @ApiOperation({ summary: 'Get user by id' })
+  @ApiResponse({ status: 200, description: 'Returns the user.' })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @ApiParam({ name: 'id',description: 'User id', type: 'string' })
+  async findOne(@Param('id') id: string) {
+    return await this.userService.findUserById(id);
   }
 
   @Patch(':id')
