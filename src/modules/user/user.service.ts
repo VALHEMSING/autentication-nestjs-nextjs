@@ -39,8 +39,15 @@ export class UserService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findUserById(userId: string): Promise<User> {
+    const userExists = await this.userModel.findById(userId).exec();
+    try {
+      if (!userExists) 
+        throw new ConflictException(`El user no existe.`);
+      return userExists;
+    } catch (error) {
+      throw new InternalServerErrorException('Error al obtener el user.');
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
