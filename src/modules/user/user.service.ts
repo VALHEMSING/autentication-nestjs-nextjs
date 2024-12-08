@@ -54,7 +54,14 @@ export class UserService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async removeUser(id: string): Promise<void> {
+    try {
+      
+     await this.userModel.findByIdAndDelete(id).exec();
+      if (!id) 
+        throw new ConflictException(`El user no existe.`);
+    } catch (error) {
+      throw new InternalServerErrorException('Error al eliminar el user.');
+    }
   }
 }

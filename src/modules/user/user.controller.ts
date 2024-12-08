@@ -60,7 +60,12 @@ export class UserController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @ApiOperation({ summary: 'Delete user by id' })
+  @ApiResponse({ status: 200, description: 'Returns the deleted user.' })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @ApiParam({ name: 'id',description: 'User id', type: 'string' })
+  async remove(@Param('id') id: string) {
+    return await  this.userService.removeUser(id);
   }
 }
