@@ -15,8 +15,13 @@ export class UserController {
   @ApiResponse({ status: 409, description: 'User already exists.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   @ApiBody({ type: CreateUserDto })
-  async create(@Body() createUserDto: CreateUserDto) {
-    return await this.userService.register(createUserDto);
+  /**
+   * Register a new user.
+   * @param createUserDto The user to register.
+   * @returns The registered user.
+   */
+  async create(@Body() user:CreateUserDto) {
+    return await this.userService.register(user);
   }
 
   @Get()
