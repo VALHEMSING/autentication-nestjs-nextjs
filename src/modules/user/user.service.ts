@@ -30,8 +30,13 @@ export class UserService {
     }
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAllUsers(): Promise<User[]> {
+    const users = await this.userModel.find().exec();
+    try {
+      return users;
+    } catch (error) {
+      throw new InternalServerErrorException('Error al obtener los users.');
+    }
   }
 
   findOne(id: number) {
