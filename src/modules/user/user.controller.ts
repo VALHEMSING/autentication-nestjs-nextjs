@@ -2,14 +2,21 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @Post('register')
+  @ApiOperation({ summary: 'Register user' })
+  @ApiResponse({ status: 201, description: 'The user has been successfully created.' })
+  @ApiResponse({ status: 409, description: 'User already exists.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @ApiBody({ type: CreateUserDto })
+  async create(@Body() createUserDto: CreateUserDto) {
+    return await this.userService.register(createUserDto);
   }
 
   @Get()
